@@ -12,6 +12,7 @@ public class PlayBlackjack {
 	public Player dealer;
 	public boolean isPlaying = true;
 	public int initialChips = 0;
+	public CardCounter cardCounter;
 
 	public PlayBlackjack(Scanner scanner) {
 
@@ -28,36 +29,47 @@ public class PlayBlackjack {
 		String name = scanner.next();
 		System.out.print("How many chips would you like?  ");
 		int chips = scanner.nextInt();
-		System.out.println("\nGreat, let's play! Ante is "+chips/100+".\n");
+		System.out.println("\nGreat, let's play! Ante is " + chips / 100 + ".\n");
 
 		this.setInitialChips(chips);
 		shoe.buildShoe(numDecks);
 		shoe.shuffle();
 		player = new Player(name, chips);
 		dealer = new Player("Dealer", 0);
+		cardCounter = new CardCounter(numDecks);
 		newRound();
 
 	}
 
 	public void newRound() {
-		int ante = initialChips/100;
+		int ante = initialChips / 100;
 		player.pushChips(ante);
-		kitty = ante*2;
-		
+		kitty = ante * 2;
+
 		dealer.hand.clearHand();
 		player.hand.clearHand();
-
-		player.hand.addCardToHand(shoe.getCard());
-		dealer.hand.addCardToHand(shoe.getCard());
-		player.hand.addCardToHand(shoe.getCard());
-		dealer.hand.addCardToHand(shoe.getCard());
+		
+		Card card = shoe.getCard();
+		cardCounter.alterCount(card);
+		player.hand.addCardToHand(card);
+		
+		card = shoe.getCard();
+		dealer.hand.addCardToHand(card);
+		
+		card = shoe.getCard();
+		cardCounter.alterCount(card);
+		player.hand.addCardToHand(card);
+		
+		card = shoe.getCard();
+		cardCounter.alterCount(card);
+		dealer.hand.addCardToHand(card);
 		showCards();
 
 	}
 
 	public void promptChoice(Scanner scanner) {
 
-		System.out.print("Would you like to 'bet', 'hit', or 'stay'?  ");
+		System.out.print("Would you like to 'bet', 'hit', 'stay', or 'guess count'?  ");
 		String input = scanner.next().toUpperCase();
 
 		if (input.startsWith("B")) {
@@ -70,7 +82,9 @@ public class PlayBlackjack {
 				String input2 = scanner.next().toUpperCase();
 				if (input2.startsWith("H")) {
 					System.out.println(player.getName() + " hits.");
-					player.hand.addCardToHand(shoe.getCard());
+					Card card = shoe.getCard();
+					cardCounter.alterCount(card);
+					player.hand.addCardToHand(card);
 				} else if (input2.startsWith("S")) {
 					System.out.println(player.getName() + " stays.");
 				} else {
@@ -86,7 +100,13 @@ public class PlayBlackjack {
 			player.hand.addCardToHand(shoe.getCard());
 		} else if (input.startsWith("S")) {
 			System.out.println(player.getName() + " stays.");
-		} else {
+		} else if(input.startsWith("G")){
+			
+			cardCounter.guessTrueCount(scanner);
+			promptChoice(scanner);
+			
+		}else {
+		
 			System.out.println("I'm sorry, I don't understand.");
 			promptChoice(scanner);
 		}
@@ -98,6 +118,8 @@ public class PlayBlackjack {
 
 		if (dealerValues == 21) {
 			System.out.println("Dealer has blackjack.");
+			dealer.showCards();
+			cardCounter.alterCount(dealer.hand.cardsInHand.get(0));
 			return false;
 		} else if (dealerValues >= 16) {
 			System.out.println("Dealer stays.");
@@ -105,12 +127,13 @@ public class PlayBlackjack {
 				System.out.println("\t\t...and " + player.getName() + " wins!");
 				player.showCards();
 				dealer.showCards();
+				cardCounter.alterCount(dealer.hand.cardsInHand.get(0));
 				player.winChips(kitty);
 				kitty = 0;
 				return false;
-			}else if(dealerValues == player.hand.sumHandValues()){
+			} else if (dealerValues == player.hand.sumHandValues()) {
 				System.out.println("Push.");
-				player.winChips(kitty/2);
+				player.winChips(kitty / 2);
 				kitty = 0;
 				return false;
 			}
@@ -118,6 +141,7 @@ public class PlayBlackjack {
 		} else if (dealerValues <= 16) {
 			System.out.println("Dealer hits.");
 			Card card = shoe.getCard();
+			cardCounter.alterCount(card);
 			dealer.hand.addCardToHand(card);
 			return true;
 		} else {
@@ -129,13 +153,13 @@ public class PlayBlackjack {
 	public boolean loopRound() {
 		while (isPlaying = true) {
 			promptChoice(scanner);
-			if(checkBusts() == true){
+			if (checkBusts() == true) {
 				break;
 			}
-			if(dealersChoice()==false){
+			if (dealersChoice() == false) {
 				break;
 			}
-			if(checkBusts() == true){
+			if (checkBusts() == true) {
 				break;
 			}
 			showCards();
@@ -146,8 +170,8 @@ public class PlayBlackjack {
 			newRound();
 			loopRound();
 			return true;
-		}else{
-			System.out.println("\nTotal winnings: "+(player.getChips()-getInitialChips())+" chips.");
+		} else {
+			System.out.println("\nTotal winnings: " + (player.getChips() - getInitialChips()) + " chips.");
 			System.out.println("  Thanks for playing!");
 			isPlaying = false;
 			return false;
@@ -157,7 +181,7 @@ public class PlayBlackjack {
 	public boolean checkBusts() {
 
 		if (player.checkBust() == true) {
-			System.out.println("You bust! Dealer takes " + kitty/2 + " chips!");
+			System.out.println("You bust! Dealer takes " + kitty / 2 + " chips!");
 			showCards();
 			kitty = 0;
 			return true;
@@ -165,19 +189,20 @@ public class PlayBlackjack {
 		if (dealer.checkBust() == true) {
 			System.out.println("Dealer busts! You win " + kitty + " chips!");
 			dealer.showCards();
+			cardCounter.alterCount(dealer.hand.cardsInHand.get(0));
 			System.out.println();
 			player.winChips(kitty);
 			showCards();
 			kitty = 0;
 			return true;
 		}
-		
+
 		return false;
 
 	}
 
 	public boolean promptPlayAgain(Scanner scanner) {
-		System.out.print("Ante is "+initialChips/100+", would you like to play again? ('yes'/'no')  ");
+		System.out.print("Ante is " + initialChips / 100 + ", would you like to play again? ('yes'/'no')  ");
 		String input = scanner.next().toUpperCase();
 
 		if (input.startsWith("Y")) {
