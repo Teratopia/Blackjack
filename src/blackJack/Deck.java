@@ -11,7 +11,7 @@ public class Deck {
 		Suit[] suits = {Suit.HEARTS, Suit.SPADES, Suit.CLUBS, Suit.DIAMONDS};
 		
 		for(Suit suit : suits){
-			for(int i = 2 ; i < 14 ; i++){
+			for(int i = 2 ; i <= 14 ; i++){
 				String number;
 				int value;
 		

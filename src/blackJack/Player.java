@@ -15,9 +15,17 @@ public class Player {
 	}
 	
 	public void showCards(){
-		
+		System.out.print(this.getName()+"'s cards: \n\t");
 		for (Card card : this.hand.cardsInHand) {
 			card.showBasicCard();
+			if(this.hand.cardsInHand.indexOf(card)!=this.hand.cardsInHand.size()-1){
+			System.out.print(", ");
+			}
+		}
+		System.out.println();
+		if(this.chips!=0){
+			System.out.println("\tChips: "+this.getChips());
+			System.out.println();
 		}
 		
 	}

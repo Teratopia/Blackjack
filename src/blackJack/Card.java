@@ -17,7 +17,7 @@ public class Card {
 	
 	public void showBasicCard(){
 		
-		System.out.println(this.getNumber() + " of "+ this.getSuit());
+		System.out.print(this.getNumber() + " of "+ this.getSuit());
 		
 	}
 

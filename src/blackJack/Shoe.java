@@ -11,6 +11,13 @@ public class Shoe {
 		
 		Deck[] decks = new Deck[numDecks];
 		
+		for(int i = 0; i < decks.length ; i++){
+			
+			decks[i] = new Deck();
+			
+		}
+		
+		
 		for (Deck deck : decks) {
 			deck.buildDeck();
 			for(Card card : deck.cards){
