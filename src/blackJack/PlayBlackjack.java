@@ -28,7 +28,7 @@ public class PlayBlackjack {
 		String name = scanner.next();
 		System.out.print("How many chips would you like?  ");
 		int chips = scanner.nextInt();
-		System.out.println("\nGreat, let's play.");
+		System.out.println("\nGreat, let's play! Ante is "+chips/100+".\n");
 
 		this.setInitialChips(chips);
 		shoe.buildShoe(numDecks);
@@ -42,7 +42,7 @@ public class PlayBlackjack {
 	public void newRound() {
 		int ante = initialChips/100;
 		player.pushChips(ante);
-		kitty = ante;
+		kitty = ante*2;
 		
 		dealer.hand.clearHand();
 		player.hand.clearHand();
@@ -99,11 +99,18 @@ public class PlayBlackjack {
 		if (dealerValues == 21) {
 			System.out.println("Dealer has blackjack.");
 			return false;
-		} else if (dealerValues > 16) {
+		} else if (dealerValues >= 16) {
 			System.out.println("Dealer stays.");
 			if (player.hand.sumHandValues() > dealerValues) {
 				System.out.println("\t\t...and " + player.getName() + " wins!");
+				player.showCards();
+				dealer.showCards();
 				player.winChips(kitty);
+				kitty = 0;
+				return false;
+			}else if(dealerValues == player.hand.sumHandValues()){
+				System.out.println("Push.");
+				player.winChips(kitty/2);
 				kitty = 0;
 				return false;
 			}
@@ -125,7 +132,9 @@ public class PlayBlackjack {
 			if(checkBusts() == true){
 				break;
 			}
-			isPlaying = dealersChoice();
+			if(dealersChoice()==false){
+				break;
+			}
 			if(checkBusts() == true){
 				break;
 			}
@@ -138,8 +147,9 @@ public class PlayBlackjack {
 			loopRound();
 			return true;
 		}else{
-			System.out.println("Total winnings: "+(initialChips-player.getChips())+" chips.");
+			System.out.println("\nTotal winnings: "+(player.getChips()-getInitialChips())+" chips.");
 			System.out.println("  Thanks for playing!");
+			isPlaying = false;
 			return false;
 		}
 	}
@@ -147,13 +157,15 @@ public class PlayBlackjack {
 	public boolean checkBusts() {
 
 		if (player.checkBust() == true) {
-			System.out.println("You bust! Dealer takes " + kitty + " chips!");
+			System.out.println("You bust! Dealer takes " + kitty/2 + " chips!");
 			showCards();
 			kitty = 0;
 			return true;
 		}
 		if (dealer.checkBust() == true) {
 			System.out.println("Dealer busts! You win " + kitty + " chips!");
+			dealer.showCards();
+			System.out.println();
 			player.winChips(kitty);
 			showCards();
 			kitty = 0;
@@ -184,7 +196,7 @@ public class PlayBlackjack {
 	public void showCards() {
 
 		player.showCards();
-		dealer.showCards();
+		dealer.showDealersCards();
 
 	}
 

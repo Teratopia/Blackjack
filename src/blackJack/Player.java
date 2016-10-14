@@ -16,6 +16,7 @@ public class Player {
 	
 	public void showCards(){
 		System.out.print(this.getName()+"'s cards: \n\t");
+		
 		for (Card card : this.hand.cardsInHand) {
 			card.showBasicCard();
 			if(this.hand.cardsInHand.indexOf(card)!=this.hand.cardsInHand.size()-1){
@@ -27,6 +28,20 @@ public class Player {
 			System.out.println("\tChips: "+this.getChips());
 			System.out.println();
 		}
+		
+	}
+	
+	public void showDealersCards(){
+		System.out.print(this.getName()+"'s showing: \n\t");
+		
+		for(int i = 1 ; i < this.hand.cardsInHand.size() ; i++){
+			this.hand.cardsInHand.get(i).showBasicCard();
+			if(i!=this.hand.cardsInHand.size()-1){
+				System.out.print(", ");
+				}
+		}
+		System.out.println();
+		System.out.println();
 		
 	}
 	
