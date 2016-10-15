@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class TestBlackjack {
 
+	//Creates scanner, new blackjack game, boolean isPlaying. Blackjack game's introMenu method is
+	//called once, then loopRound loops and determines the value of isPlaying. If the player quits,
+	//isPlaying is set to false, the loop ends, and the scanner closes.
 	public static void main(String[] args) {
 		boolean isPlaying = true;
 		Scanner scanner = new Scanner(System.in);
@@ -14,22 +17,7 @@ public class TestBlackjack {
 		isPlaying = game.loopRound();
 		}
 		
-		scanner.close();
-		
-//		Deck d = new Deck();
-//		d.buildDeck();
-//		for (Card card : d.cards) {
-//			card.showBasicCard();
-//		}
-		
-//		Shoe s = new Shoe();
-//		s.buildShoe(4);
-//		
-//		for (Card card : s.shoe) {
-//			card.showBasicCard();
-//			System.out.print(" ");
-//		}
-		
+		scanner.close();	
 		
 	}
 

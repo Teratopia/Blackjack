@@ -15,18 +15,21 @@ public class Hand {
 		
 	}
 
+	//Removes all cards from hand
 	public void clearHand(){
 		
 		this.cardsInHand = new ArrayList<Card>();
 		
 	}
 
+	//Adds card to cardsInHand
 	public void addCardToHand(Card card){
 		
 		cardsInHand.add(card);
 		
 	}
 	
+	//Adds values of all cards in cardsInHand
 	public int sumHandValues(){
 		int sum = 0;
 		

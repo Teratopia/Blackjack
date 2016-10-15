@@ -14,6 +14,7 @@ public class Player {
 		
 	}
 	
+	//Prints all cards in hand, plus the value of chips
 	public void showCards(){
 		System.out.print(this.getName()+"'s cards: \n\t");
 		
@@ -31,6 +32,7 @@ public class Player {
 		
 	}
 	
+	//Prints the values of all cards in hand except for first card dealt
 	public void showDealersCards(){
 		System.out.print(this.getName()+"'s showing: \n\t");
 		
@@ -45,18 +47,21 @@ public class Player {
 		
 	}
 	
+	//adds to chip count
 	public void winChips(int numChips){
 		
 		this.setChips(this.getChips()+numChips);
 		
 	}
 	
+	//subtracts from chip count
 	public void pushChips(int numChips){
 		
 		this.setChips(this.getChips()-numChips);
 		
 	}
 	
+	//sums all cards in hand, returns true if over 21, returns false if below 21
 	public boolean checkBust(){
 		
 		int total = this.hand.sumHandValues();

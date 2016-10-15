@@ -7,6 +7,8 @@ public class Shoe {
 	
 	public ArrayList<Card> shoe = new ArrayList<Card>();
 	
+	//Builds multiple decks based on parameter, then iterates through each deck adding each card 
+	//to the shoe ArrayList
 	public void buildShoe(int numDecks){
 		
 		Deck[] decks = new Deck[numDecks];
