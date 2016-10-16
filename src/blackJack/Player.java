@@ -14,6 +14,46 @@ public class Player {
 		
 	}
 	
+	public void showComplexCards(){
+		
+		for (Card card : this.hand.cardsInHand) {
+			card.buildCardLines();
+		}
+		
+		System.out.println(this.getName()+"'s cards:\n");
+		
+		for(int i = 0; i < 11 ; i++){
+			for(Card card : this.hand.cardsInHand){
+				System.out.print(card.getCardLines()[i]);
+			}
+			System.out.println();
+		}
+		System.out.println();
+		if(this.chips!=0){
+			System.out.println("\tChips: "+this.getChips());
+			System.out.println();
+		}
+		
+	}
+	public void showComplexDealersCards(){
+		
+		for (Card card : this.hand.cardsInHand) {
+			card.buildCardLines();
+		}
+		
+		System.out.println("Dealer's showing:\n");
+		
+		for(int i = 0; i < 11 ; i++){
+			for(int n = 1 ; n < this.hand.cardsInHand.size() ; n++){
+				System.out.print(this.hand.cardsInHand.get(n).getCardLines()[i]);
+			}
+			System.out.println();
+		}
+		System.out.println();
+		
+		
+	}
+	
 	//Prints all cards in hand, plus the value of chips
 	public void showCards(){
 		System.out.print(this.getName()+"'s cards: \n\t");

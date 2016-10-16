@@ -156,16 +156,16 @@ public class PlayBlackjack {
 
 		if (dealerValues == 21) {
 			System.out.println("Dealer has blackjack.");
-			dealer.showCards();
+			dealer.showComplexCards();
 			cardCounter.alterCount(dealer.hand.cardsInHand.get(0));
 			return false;
 		} else if (dealerValues > 15) {
 			System.out.println("Dealer stays.");
 			pushCount++;
-			if (player.hand.sumHandValues() > dealerValues) {
+			if (player.hand.sumHandValues() > dealerValues && player.hand.sumHandValues() < 22) {
 				System.out.println("\t\t...and " + player.getName() + " wins!");
-				player.showCards();
-				dealer.showCards();
+				player.showComplexCards();
+				dealer.showComplexCards();
 				cardCounter.alterCount(dealer.hand.cardsInHand.get(0));
 				player.winChips(kitty);
 				return false;
@@ -249,22 +249,22 @@ public class PlayBlackjack {
 					return false;
 				}
 			}
-		} else if (player.checkBust() == true) {
+
 			System.out.println("You bust! Dealer takes " + kitty / 2 + " chips!");
 			showCards();
 			kitty = 0;
 			return true;
 		}
-		if (player.checkBust() == true) {
-			for (Card card : player.hand.cardsInHand) {
+
+		if (dealer.checkBust() == true) {
+			for (Card card : dealer.hand.cardsInHand) {
 				if (card.getValue() == 11) {
 					card.setValue(1);
 					return false;
 				}
 			}
-		} else if (dealer.checkBust() == true) {
 			System.out.println("Dealer busts! You win " + kitty + " chips!");
-			dealer.showCards();
+			dealer.showComplexCards();
 			cardCounter.alterCount(dealer.hand.cardsInHand.get(0));
 			System.out.println();
 			player.winChips(kitty);
@@ -299,9 +299,9 @@ public class PlayBlackjack {
 	// Shows the values of both players' cards, minus one for the dealer.
 	public void showCards() {
 
-		player.showCards();
-		dealer.showCards();
-		// dealer.showDealersCards();
+		player.showComplexCards();
+		// dealer.showCards();
+		dealer.showComplexDealersCards();
 
 	}
 
