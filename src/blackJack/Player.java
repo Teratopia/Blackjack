@@ -51,7 +51,6 @@ public class Player {
 		}
 		System.out.println();
 		
-		
 	}
 	
 	//Prints all cards in hand, plus the value of chips
