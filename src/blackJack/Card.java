@@ -27,11 +27,11 @@ public class Card {
 	
 	public void buildCardLines(){
 		String heartPip = "\u2665", spadePip = "\u2660", clubPip = "\u2663", diamondPip = "\u2666";
+		
 		String[][] pips = {{}, {"k"}, {"b", "t"}, {"b", "k", "t"}, {"a", "c", "s", "u"}, 
 				{"a", "c", "k", "s", "u"}, {"a", "c", "j", "l", "s", "u"}, {"a", "c", "e", "j", "l", "s", "u"},
 				{"a", "c", "e", "j", "l", "q", "s", "u"}, {"a", "c", "g", "i", "k", "m", "o", "s", "u"}, 
 				{"a", "c", "e", "g", "i", "m", "o", "q", "s", "u"}};
-				
 		
 		HashMap<String, String> pipMap = new HashMap<>(21);
 		pipMap.put("a", " ");pipMap.put("b", " ");pipMap.put("c", " ");pipMap.put("d", " ");
@@ -45,7 +45,7 @@ public class Card {
 		String pip = "";
 		int setPips = this.getValue();
 		
-		if(this.getSuit() == Suit.HEARTS){
+		if(this.getSuit()==Suit.HEARTS){
 			pip = heartPip;
 		}else if(this.getSuit()==Suit.SPADES){
 			pip = spadePip;
